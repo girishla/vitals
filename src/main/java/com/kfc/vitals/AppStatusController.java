@@ -9,8 +9,8 @@ public class AppStatusController {
 
     @RequestMapping("/")
     @ResponseBody
-    String home() {
-      return "App seems to be runnning OK";
+    String appStatus() {
+      return "Vitals App is runnning and monitoring KFC services";
     }
 
 }
