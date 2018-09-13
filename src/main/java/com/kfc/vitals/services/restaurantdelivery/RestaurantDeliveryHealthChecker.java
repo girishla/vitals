@@ -1,6 +1,6 @@
 package com.kfc.vitals.services.restaurantdelivery;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -33,7 +33,7 @@ public class RestaurantDeliveryHealthChecker
 			List<Restaurant> restaurants = apiService.invokeApi(input);
 			ServiceStatus status = restaurants.isEmpty() ? ServiceStatus.DOWN : ServiceStatus.UP;
 
-			return getResult(serviceProvider, "", status);
+			return getResult(serviceProvider, "Everything OK", status);
 
 		} catch (HttpClientErrorException e) {
 			log.info(">>>>>>>>>> API Error {}", e.getResponseBodyAsString());
@@ -55,7 +55,7 @@ public class RestaurantDeliveryHealthChecker
 				.provider(serviceProvider)
 				.status(status)
 				.statusMessage(message)
-				.statusTime(LocalDate.now())
+				.statusTime(LocalDateTime.now())
 				.build();
 	}
 

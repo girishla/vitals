@@ -7,7 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class HealthCheckerServiceTests {
 
 	private ServiceHealthChecker<ServiceProvider<?>, Object> healthChecker;
 	private final RestaurantDeliveryService delService = Mockito.mock(RestaurantDeliveryService.class);
-	private final HealthNotificationListener listener = Mockito.mock(HealthNotificationListener.class);
+	private final HealthNotificationListener<?> listener = Mockito.mock(HealthNotificationListener.class);
 	private final RestaurantDeliveryServiceProvider serviceProvider = Mockito
 			.mock(RestaurantDeliveryServiceProvider.class);
 	private ServiceHealthCheckerRepository serviceHealthCheckerRepository;
@@ -87,7 +87,7 @@ public class HealthCheckerServiceTests {
 		setUpMocksWithHealthChecker(healthChecker);
 
 		when(apiService.invokeApi(getValidInput()))
-				.thenReturn(Utils.readJsonObject(Utils.readFileAsString("restaurantsSingle.json")));
+				.thenReturn(Utils.readJsonObjectList(Utils.readFileAsString("restaurantsSingleList.json")));
 
 		healthCheckRunner.healthCheck();
 		ArgumentCaptor<HealthCheckResult> argumentCaptor = ArgumentCaptor.forClass(HealthCheckResult.class);
@@ -120,7 +120,7 @@ public class HealthCheckerServiceTests {
 	@SuppressWarnings("unchecked")
 	private void setUpMocks() {
 		healthChecker = (ServiceHealthChecker<ServiceProvider<?>, Object>) Mockito.mock(ServiceHealthChecker.class);
-		when(serviceProvider.getProviderInfo()).thenReturn(getValidInput());
+		when(serviceProvider.getProviderCheckInputList()).thenReturn(Collections.singletonList(getValidInput()));
 		when(delService.getProviders()).thenReturn(Collections.singletonList(serviceProvider));
 		when(delService.getName()).thenReturn(ServiceName.RESTAURANT_DELIVERY);
 		when(serviceProvider.getName()).thenReturn(PROVIDER_NAME);
@@ -141,7 +141,7 @@ public class HealthCheckerServiceTests {
 				.name(ServiceName.RESTAURANT_DELIVERY)
 				.provider(serviceProvider)
 				.status(ServiceStatus.UP)
-				.statusTime(LocalDate.now())
+				.statusTime(LocalDateTime.now())
 				.statusMessage("")
 				.build();
 	}
@@ -149,7 +149,7 @@ public class HealthCheckerServiceTests {
 	@SuppressWarnings("unchecked")
 	private void setUpMocksWithHealthChecker(
 			ServiceHealthChecker<RestaurantDeliveryServiceProvider, RestaurantDeliveryServiceInput> healthChecker2) {
-		when(serviceProvider.getProviderInfo()).thenReturn(getValidInput());
+		when(serviceProvider.getProviderCheckInputList()).thenReturn(Collections.singletonList(getValidInput()));
 		when(delService.getProviders()).thenReturn(Collections.singletonList(serviceProvider));
 		when(delService.getName()).thenReturn(ServiceName.RESTAURANT_DELIVERY);
 		when(serviceProvider.getName()).thenReturn(PROVIDER_NAME);

@@ -9,8 +9,6 @@ public class VitalsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(VitalsApplication.class, args);
 	}
-
-	
 	
 
 }
