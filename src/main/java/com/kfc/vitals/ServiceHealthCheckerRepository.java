@@ -13,22 +13,25 @@ import lombok.experimental.Delegate;
 public class ServiceHealthCheckerRepository {
 
 	@Delegate
-	private final Map<ServiceName,ServiceHealthChecker<ServiceProvider<?>, Object>> serviceHealthCheckerMap = new HashMap<>();
-	
-	@Autowired
-	private List<? extends ServiceHealthChecker<ServiceProvider<?>, Object>> serviceHealthCheckerList;
+	private final Map<ServiceName, ServiceHealthChecker<ServiceProvider<?>, Object>> serviceHealthCheckerMap = new HashMap<>();
 
-	public ServiceHealthCheckerRepository(List<? extends ServiceHealthChecker<ServiceProvider<?>, Object>> serviceHealthCheckerList) {
+	/**
+	 * Spring DI fails to work correctly with 2 levels nested Generics, hence raw type declaration for ServiceHealthChecker
+	 */
+	@Autowired
+	private @SuppressWarnings("rawtypes") List<? extends ServiceHealthChecker> serviceHealthCheckerList;
+
+	public ServiceHealthCheckerRepository(
+			@SuppressWarnings("rawtypes") List<? extends ServiceHealthChecker> serviceHealthCheckerList) {
 		this.serviceHealthCheckerList = serviceHealthCheckerList;
 		populateRepo();
 	}
 
-
-	private void populateRepo(){
+	@SuppressWarnings("unchecked")
+	private void populateRepo() {
 		for (ServiceHealthChecker<ServiceProvider<?>, Object> healthChecker : serviceHealthCheckerList) {
 			serviceHealthCheckerMap.put(healthChecker.getServiceName(), healthChecker);
 		}
 	}
 
-	
 }

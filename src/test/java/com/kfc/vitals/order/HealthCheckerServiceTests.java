@@ -46,11 +46,14 @@ public class HealthCheckerServiceTests {
 	private ServiceHealthCheckerRepository serviceHealthCheckerRepository;
 	HealthCheckerRunner healthCheckRunner;
 
+	
 	private static final String PROVIDER_NAME = "LONDON_WATERLOO_KFC";
 
 	@Before
 	public void setup() {
 		setUpMocks();
+		
+		
 	}
 
 	
