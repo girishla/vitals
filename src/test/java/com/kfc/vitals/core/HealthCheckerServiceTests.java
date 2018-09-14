@@ -1,4 +1,4 @@
-package com.kfc.vitals.order;
+package com.kfc.vitals.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -52,8 +52,6 @@ public class HealthCheckerServiceTests {
 	@Before
 	public void setup() {
 		setUpMocks();
-		
-		
 	}
 
 	

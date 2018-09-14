@@ -1,4 +1,4 @@
-package com.kfc.vitals.order;
+package com.kfc.vitals.core;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
