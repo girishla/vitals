@@ -264,7 +264,7 @@
     "etaInSeconds": 1087,
     "estimatedDelivery": "31",
     "lastFleetCheckDate": "2018-09-13T19:52:15.955Z"
-}{
+},{
     "sfid": "0011o00001SrQMaAAN",
     "name": "Dummy-Brixton",
     "refid": "1001",
@@ -330,6 +330,4 @@
     "etaInSeconds": 1087,
     "estimatedDelivery": "31",
     "lastFleetCheckDate": "2018-09-13T19:52:15.955Z"
-}]
-
-    
+}]  
