@@ -1,4 +1,4 @@
-package com.kfc.vitals.sf;
+package com.kfc.vitals.sf.auth;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class SalesforceAuthRequest implements Serializable {
+public class SfJwtAuthRequest implements Serializable {
 
 	private String grantType;
 	private String assertion;

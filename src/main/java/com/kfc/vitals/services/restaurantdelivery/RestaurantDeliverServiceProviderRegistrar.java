@@ -32,6 +32,8 @@ public class RestaurantDeliverServiceProviderRegistrar {
 			service.addProvider(new RestaurantDeliveryServiceProvider(restaurant,restaurantServiceInput));
 		}
 		
+		
+		log.info("App {} has strted successfully",System.getProperty("spring.application.name"));
 
 	}
 

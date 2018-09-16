@@ -1,4 +1,4 @@
-package com.kfc.vitals.sf;
+package com.kfc.vitals.sf.auth;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,13 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class SalesforceAuthApiService implements ApiService<SalesforceAuthRequest, SalesforceAuthResponse> {
+public class SfAuthApiService implements ApiService<SfJwtAuthRequest, SfJwtAuthResponse> {
 
 	private static final String baseUrl = "https://bmdev1-dev-ed.my.salesforce.com/";
 	private static final String endpoint = baseUrl + "services/oauth2/token";
 
 	@Override
-	public List<SalesforceAuthResponse> invokeApi(SalesforceAuthRequest input) {
+	public List<SfJwtAuthResponse> invokeApi(SfJwtAuthRequest input) {
 
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(endpoint)
 				.queryParam("grant_type", input.getGrantType())
@@ -33,17 +33,17 @@ public class SalesforceAuthApiService implements ApiService<SalesforceAuthReques
 				.queryParam("client_id", input.getClientId())
 				.queryParam("client_secret", input.getClientSecret());
 
-		HttpEntity<SalesforceAuthRequest> request = new HttpEntity<>(input, getHttpHeader());
+		HttpEntity<SfJwtAuthRequest> request = new HttpEntity<>(input, getHttpHeader());
 
 		
 		log.info("****** Posting auth to {}, ",uriBuilder.toUriString());
 		
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<SalesforceAuthResponse> response = restTemplate.exchange(uriBuilder.toUriString(),
-				HttpMethod.POST, request, new ParameterizedTypeReference<SalesforceAuthResponse>() {
+		ResponseEntity<SfJwtAuthResponse> response = restTemplate.exchange(uriBuilder.toUriString(),
+				HttpMethod.POST, request, new ParameterizedTypeReference<SfJwtAuthResponse>() {
 				});
 
-		List<SalesforceAuthResponse> auth = Collections.singletonList(response.getBody());
+		List<SfJwtAuthResponse> auth = Collections.singletonList(response.getBody());
 		log.info(">>>>>>>>>>>> Response is {}", auth);
 		return auth;
 	}
