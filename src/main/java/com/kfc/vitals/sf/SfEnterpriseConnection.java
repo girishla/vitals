@@ -2,11 +2,14 @@ package com.kfc.vitals.sf;
 
 import javax.xml.namespace.QName;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
+import com.kfc.vitals.sf.auth.SfJwtAuthenticator;
 import com.kfc.vitals.sf.auth.SfSessionInfo;
 import com.sforce.async.AsyncApiException;
 import com.sforce.async.AsyncExceptionCode;
@@ -14,6 +17,10 @@ import com.sforce.soap.enterprise.Connector;
 import com.sforce.soap.enterprise.EnterpriseConnection;
 import com.sforce.soap.enterprise.GetServerTimestampResult;
 import com.sforce.soap.enterprise.GetUserInfoResult;
+import com.sforce.soap.enterprise.SaveResult;
+import com.sforce.soap.enterprise.UpsertResult;
+import com.sforce.soap.enterprise.sobject.SObject;
+import com.sforce.soap.enterprise.sobject.ServiceStatusCurrent__c;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 import com.sforce.ws.SessionRenewer;
@@ -21,8 +28,8 @@ import com.sforce.ws.SessionRenewer;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Provides a connection to salesforce.com. Re-connects when necessary if the
- * connection is not alive.
+ * Provides a Enterprise connection to salesforce.com. Re-connects when
+ * necessary if the connection is not alive.
  * 
  * @author Girish Lakshmanan
  *
@@ -30,14 +37,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class SfEnterpriseConnection {
+public class SfEnterpriseConnection implements InitializingBean {
 
-	private SfSessionInfo sessionInfo;
 	private EnterpriseConnection connection;
+	private SfJwtAuthenticator jwtAuthService;
+	private String apiVersion;
 
-	public SfEnterpriseConnection(SfSessionInfo sessionInfo) {
-		this.sessionInfo = sessionInfo;
-		connect();
+	public SfEnterpriseConnection(SfJwtAuthenticator jwtAuthService,
+			@Value("${vitals.sf-api-version}") String apiVersion) {
+		this.apiVersion=apiVersion;
+		this.jwtAuthService = jwtAuthService;
 	};
 
 	/**
@@ -76,10 +85,11 @@ public class SfEnterpriseConnection {
 
 	private ConnectorConfig getConfig() {
 
-		ConnectorConfig config = new ConnectorConfig();
+		SfSessionInfo sessionInfo = jwtAuthService.authenticate();
 
+		ConnectorConfig config = new ConnectorConfig();
 		config.setSessionId(sessionInfo.getToken());
-		config.setServiceEndpoint(sessionInfo.getInstanceUrl());
+		config.setServiceEndpoint(sessionInfo.getInstanceUrl() + "/services/Soap/c/" + apiVersion);
 		// config.setAuthEndpoint(authEndpoint);
 
 		config.setCompression(true);
@@ -131,6 +141,8 @@ public class SfEnterpriseConnection {
 	}
 
 	private void handleException(Exception e) {
+
+		log.error(e.getMessage());
 		if (e instanceof AsyncApiException) {
 
 			if (((AsyncApiException) e).getExceptionCode() == AsyncExceptionCode.InvalidSessionId) {
@@ -149,6 +161,31 @@ public class SfEnterpriseConnection {
 			return getConnection().getServerTimestamp();
 		} catch (ConnectionException e) {
 			throw new SfConnectionException(e);
+		}
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		this.connect();
+	}
+
+	public SaveResult[] create(SObject[] sObjects) {
+		try {
+			return connection.create(sObjects);
+		} catch (ConnectionException e) {
+			handleException(e);
+			throw new SfConnectionException("create call failed.", e);
+		}
+	}
+	
+	
+	public UpsertResult[] upsert(String externIdFieldName,SObject[] objs) {
+		try {
+			return connection.upsert(externIdFieldName,objs);
+		} catch (ConnectionException e) {
+			e.printStackTrace();
+			handleException(e);
+			throw new SfConnectionException("upsert call failed.", e);
 		}
 	}
 

@@ -37,4 +37,9 @@ public class RestaurantDeliveryServiceProvider implements ServiceProvider<Restau
 		return restaurant.getRefid() + ":" + restaurant.getName();
 	}
 
+	@Override
+	public String getId() {
+		return restaurant.getRefid();
+	}
+
 }

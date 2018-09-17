@@ -8,6 +8,9 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+
 import com.heroku.sdk.EnvKeyStore;
 
 import io.jsonwebtoken.Jwts;
@@ -22,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
+@Component
+//@PropertySource("file:secure/secure.properties")
 public class SfJwtAuthenticator implements SfAuthenticator<SfJwtAuthResponse> {
 
 	private static final String ALIAS = "alias";
@@ -29,19 +34,13 @@ public class SfJwtAuthenticator implements SfAuthenticator<SfJwtAuthResponse> {
 
 	private String jwt;
 
-	private String authUrl;
-	private String privateKeyPem;
-	private String certPem;
-	private String consumerKey;
-	private String sfUser;
+	
+	private SfJwtProps jwtProps;
+	
+	public SfJwtAuthenticator(SfJwtProps jwtProps) {
 
-	public SfJwtAuthenticator(String authUrl, String privateKeyPem, String certPem, String consumerKey, String sfUser) {
+		this.jwtProps=jwtProps;
 
-		this.privateKeyPem = privateKeyPem;
-		this.certPem = certPem;
-		this.consumerKey = consumerKey;
-		this.sfUser = sfUser;
-		this.authUrl = authUrl;
 	}
 
 	/*
@@ -53,21 +52,20 @@ public class SfJwtAuthenticator implements SfAuthenticator<SfJwtAuthResponse> {
 	public String getToken() {
 
 		try {
-
-			EnvKeyStore eks = EnvKeyStore.createFromPEMStrings(privateKeyPem, certPem, getRandomPassword());
+			EnvKeyStore eks = EnvKeyStore.createFromPEMStrings(jwtProps.getPrivateKeyPem(), jwtProps.getCertPem(), getRandomPassword());
 
 			PrivateKey key = (PrivateKey) eks.keyStore()
 					.getKey(ALIAS, eks.password()
 							.toCharArray());
 
 			String jwt = Jwts.builder()
-					.setIssuer(consumerKey)
-					.setSubject(sfUser)
+					.setIssuer(jwtProps.getConsumerKey())
+					.setSubject(jwtProps.getSfUser())
 					.setExpiration(Date.from(LocalDate.now()
 							.plusDays(365)
 							.atStartOfDay(ZoneId.systemDefault())
 							.toInstant()))
-					.setAudience(authUrl)
+					.setAudience(jwtProps.getAuthUrl())
 					.signWith(SignatureAlgorithm.RS256, key)
 					.compact();
 			return jwt;
@@ -97,7 +95,7 @@ public class SfJwtAuthenticator implements SfAuthenticator<SfJwtAuthResponse> {
 		List<SfJwtAuthResponse> authResp = apiService.invokeApi(SfJwtAuthRequest.builder()
 				.grantType(GRANT_TYPE)
 				.assertion(jwt)
-				.clientId(consumerKey)
+				.clientId(jwtProps.getConsumerKey())
 				.build());
 		SfJwtAuthResponse resp = authResp.get(0);
 		return resp;

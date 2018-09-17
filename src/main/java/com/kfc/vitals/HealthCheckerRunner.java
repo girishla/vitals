@@ -3,6 +3,7 @@ package com.kfc.vitals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Runs Health checks for all registered services and service providers. The
  * same service provider may be checked with different inputs to ensure all
- * possible cases are covered Notifies all registered listeners when health
+ * possible cases are covered; Notifies all registered listeners when health
  * check is completed
  * 
  * @author Girish Lakshmanan
@@ -22,14 +23,14 @@ public class HealthCheckerRunner {
 
 	private final List<Service> services;
 	private final ServiceHealthCheckerRepository healthCheckerRepository;
-	private final List<HealthNotificationListener> listeners = new ArrayList<>();
+	private final List<HealthNotificationListener<?>> listeners = new ArrayList<>();
 
 	public HealthCheckerRunner(List<Service> services, ServiceHealthCheckerRepository healthCheckerRepository) {
 		this.services = services;
 		this.healthCheckerRepository = healthCheckerRepository;
 	}
 
-	public void addListener(HealthNotificationListener healthNotificationListener) {
+	public void addListener(HealthNotificationListener<?> healthNotificationListener) {
 		listeners.add(healthNotificationListener);
 	}
 
@@ -43,7 +44,7 @@ public class HealthCheckerRunner {
 				for (Object providerCheckInput : serviceProvider.getProviderCheckInputList()) {
 					HealthCheckResult result = healthChecker.checkServiceProvider(serviceProvider,
 							providerCheckInput);
-					for (HealthNotificationListener listener : listeners) {
+					for (HealthNotificationListener<?> listener : listeners) {
 						log.info(">>>>>>>> Calling listener {}", listener.getClass()
 								.getName());
 						listener.notify(result);
@@ -53,4 +54,10 @@ public class HealthCheckerRunner {
 			}
 		}
 	}
+	
+	@Async("threadPoolTaskExecutor")
+	public void healthCheckAsync(){
+		healthCheck();
+	}
+	
 }

@@ -10,9 +10,9 @@ import lombok.Data;
 public class HealthCheckResult {
 
 	private ServiceName name;
-	private ServiceProvider provider;
+	private ServiceProvider<?> provider;
 	private ServiceStatus status;
 	private LocalDateTime statusTime;
 	private String statusMessage;
-
+	
 }

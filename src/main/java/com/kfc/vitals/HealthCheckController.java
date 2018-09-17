@@ -1,5 +1,7 @@
 package com.kfc.vitals;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -9,32 +11,19 @@ import lombok.Getter;
 
 @Controller
 @AllArgsConstructor
+@Getter
 public class HealthCheckController {
 
-	@Getter
 	private HealthCheckerRunner runner;
+	private SfUpdatingNotificationListener listener;
 
 	@RequestMapping("/check")
 	@ResponseBody
-	String checkHealth() {
-		HealthNotificationListener<String> listener = new HealthNotificationListener<String>() {
-
-			public String returnValue="";
-
-			@Override
-			public void notify(HealthCheckResult result) {
-				returnValue = returnValue + "<br />"+ result.toString();
-			}
-
-			@Override
-			public String getListenerState() {
-				return returnValue;
-			}
-
-		};
+	ResponseEntity<?> checkHealth() {
 		runner.addListener(listener);
-		runner.healthCheck();
-		return listener.getListenerState();
+		runner.healthCheckAsync();
+
+		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 
 	}
 

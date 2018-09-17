@@ -20,20 +20,14 @@ public class RestaurantDeliverServiceProviderRegistrar {
 
 	@EventListener
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>> APP STARTED");
-		
-		
+		log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>> Registering Restaurant Service providers.");
 		List<Restaurant> restaurants=Utils.readRestaurants(Utils.readFileAsString("restaurants.json"));
-		
-		
 		for(Restaurant restaurant:restaurants ){
 			List<RestaurantDeliveryServiceInput> restaurantServiceInput=Utils.readRestaurantDeliveryInput(Utils.readFileAsString("restaurantDeliveryProviderInput_"+ restaurant.getRefid() + ".json"));
 			log.info("FOUND ::::::{}",restaurant.getName());
 			service.addProvider(new RestaurantDeliveryServiceProvider(restaurant,restaurantServiceInput));
 		}
-		
-		
-		log.info("App {} has strted successfully",System.getProperty("spring.application.name"));
+		log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>RestaurantDeliverServiceProviderRegistrar SUCCESS.");
 
 	}
 

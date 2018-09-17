@@ -54,7 +54,7 @@
 		<dependency>
 			<groupId>com.force.api</groupId>
 			<artifactId>force-wsc</artifactId>
-			<version>44.0.0</version>
+			<version>42.0.0</version>
 			<classifier>uber</classifier>
 		</dependency>
 		<!-- to generate JWT for SFDC Web servier -->
@@ -79,103 +79,26 @@
 			<groupId>org.springframework.retry</groupId>
 			<artifactId>spring-retry</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.local</groupId>
+			<artifactId>wsc</artifactId>
+			<version>1.2</version>
+		</dependency>
 	</dependencies>
-
-
-	<!-- <build> <plugins> <plugin> <groupId>org.springframework.boot</groupId> 
-		<artifactId>spring-boot-maven-plugin</artifactId> </plugin> </plugins> </build> -->
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
-				<executions>
-					<execution>
-						<id>default-cli</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<outputFile>wsc.log</outputFile>
-							<executable>java</executable>
-							<arguments>
-								<argument>-classpath</argument>
-								<classpath>
-									<dependency>com.force.api:force-wsc</dependency>
-									<dependency>com.sun:tools</dependency>
-								</classpath>
-								<argument>com.sforce.ws.tools.wsdlc</argument>
-								<argument>-nc</argument>
-								<argument>src/main/resources/ent.wsdl</argument>
-								<argument>wsc.jar</argument>
-								<argument>${project.build.directory}/generated-sources/wsc</argument>
-							</arguments>
-							<systemProperties>
-								<systemProperty>
-									<key>package-prefix</key>
-									<value>popcorn</value>
-								</systemProperty>
-							</systemProperties>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>${project.build.directory}/generated-sources/wsc</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>exec-maven-plugin</artifactId>
-										<versionRange>[1.0,)</versionRange>
-										<goals>
-											<goal>exec</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
-
-
-
+	<repositories>
+		<repository>
+			<id>vitals.local</id>
+			<name>vitals</name>
+			<url>file:${project.basedir}/localrepo</url>
+		</repository>
+	</repositories>
 
 </project>
