@@ -2,6 +2,7 @@ package com.kfc.vitals.services.restaurantdelivery;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,12 +14,18 @@ import org.springframework.web.client.RestTemplate;
 
 import com.kfc.vitals.ApiService;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
 public class RestaurantDeliveryApiService implements ApiService<RestaurantDeliveryServiceInput,Restaurant>  {
 
+	@Getter
+	@Setter
+	@Autowired
+	private RestTemplate restTemplate;
 	private static final String baseUrl = "https://order.kfc.co.uk/";
 	private static final String getRestaurantsByDeliveryPostcodeEndpoint = baseUrl + "getRestaurantsByDeliveryPostcode";
 	
@@ -29,7 +36,6 @@ public class RestaurantDeliveryApiService implements ApiService<RestaurantDelive
 	public List<Restaurant> invokeApi(RestaurantDeliveryServiceInput input) {
 	
 		HttpEntity<RestaurantDeliveryServiceInput> request = new HttpEntity<>(input, getHttpHeader());
-		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<List<Restaurant>> response = restTemplate.exchange(getRestaurantsByDeliveryPostcodeEndpoint,
 				HttpMethod.POST, request, new ParameterizedTypeReference<List<Restaurant>>() {
 				});

@@ -37,7 +37,7 @@ public class RestaurantDeliveryHealthChecker
 
 		} catch (HttpClientErrorException e) {
 			log.info(">>>>>>>>>> API Error {}", e.getResponseBodyAsString());
-			return getResult(serviceProvider, e.getStatusText() + ':' + e.getResponseBodyAsString(),
+			return getResult(serviceProvider, e.getStatusText() + ':' + e.getResponseBodyAsString().substring(0,800),
 					ServiceStatus.ERROR);
 		} catch (Exception e) {
 			log.info("Error calling API {}", e.getMessage());

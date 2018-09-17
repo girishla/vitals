@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
-//@PropertySource("file:secure/secure.properties")
+@PropertySource("file:secure/secure.properties")
 public class SfJwtAuthenticator implements SfAuthenticator<SfJwtAuthResponse> {
 
 	private static final String ALIAS = "alias";
