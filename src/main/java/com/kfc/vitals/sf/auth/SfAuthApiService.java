@@ -3,6 +3,7 @@ package com.kfc.vitals.sf.auth;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,18 +14,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.kfc.vitals.ApiService;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class SfAuthApiService implements ApiService<SfJwtAuthRequest, SfJwtAuthResponse> {
+@ConditionalOnProperty("vitals.sf.enabled")
+public class SfAuthApiService{
 
 	private static final String baseUrl = "https://bmdev1-dev-ed.my.salesforce.com/";
 	private static final String endpoint = baseUrl + "services/oauth2/token";
 
-	@Override
+	
 	public List<SfJwtAuthResponse> invokeApi(SfJwtAuthRequest input) {
 
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(endpoint)

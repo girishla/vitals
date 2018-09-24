@@ -8,7 +8,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import com.heroku.sdk.EnvKeyStore;
@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
-//@PropertySource("file:secure/secure.properties")
+@ConditionalOnProperty("vitals.sf.enabled")
 public class SfJwtAuthenticator implements SfAuthenticator<SfJwtAuthResponse> {
 
 	private static final String ALIAS = "alias";

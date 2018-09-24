@@ -1,5 +1,6 @@
 package com.kfc.vitals.sf.auth;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @ConfigurationProperties(prefix = "kfc.vitals.jwt")
 @AllArgsConstructor
 @NoArgsConstructor
+@ConditionalOnProperty("vitals.sf.enabled")
 public class SfJwtProps {
 
 	private String authUrl;

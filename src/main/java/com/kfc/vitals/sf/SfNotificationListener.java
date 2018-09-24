@@ -1,16 +1,19 @@
-package com.kfc.vitals;
+package com.kfc.vitals.sf;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import com.kfc.vitals.sf.ServiceStatusFactory;
-import com.kfc.vitals.sf.SfEnterpriseConnection;
+import com.kfc.vitals.HealthCheckResult;
+import com.kfc.vitals.HealthNotificationListener;
+import com.kfc.vitals.ServiceStatusFactory;
 import com.sforce.soap.enterprise.sobject.ServiceStatusCurrent__c;
 
 import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor
-public class SfUpdatingNotificationListener implements HealthNotificationListener<String> {
+@ConditionalOnProperty("vitals.sf.enabled")
+public class SfNotificationListener implements HealthNotificationListener<String> {
 
 	private SfEnterpriseConnection conn;
 

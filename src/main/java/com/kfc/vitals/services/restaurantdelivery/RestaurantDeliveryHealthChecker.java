@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.kfc.vitals.ApiService;
 import com.kfc.vitals.HealthCheckResult;
 import com.kfc.vitals.ServiceHealthChecker;
 import com.kfc.vitals.ServiceName;
@@ -19,9 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 public class RestaurantDeliveryHealthChecker
 		implements ServiceHealthChecker<RestaurantDeliveryServiceProvider, RestaurantDeliveryServiceInput> {
 
-	ApiService<RestaurantDeliveryServiceInput, Restaurant> apiService;
+	private RestaurantDeliveryApiService apiService;
 	
-	public RestaurantDeliveryHealthChecker(ApiService<RestaurantDeliveryServiceInput, Restaurant> apiService){
+	public RestaurantDeliveryHealthChecker(RestaurantDeliveryApiService apiService){
 		this.apiService=apiService;
 	}
 
@@ -37,11 +36,11 @@ public class RestaurantDeliveryHealthChecker
 
 		} catch (HttpClientErrorException e) {
 			log.info(">>>>>>>>>> API Error {}", e.getResponseBodyAsString());
-			return getResult(serviceProvider, e.getStatusText() + ':' + e.getResponseBodyAsString().substring(0,800),
+			return getResult(serviceProvider, "API Error" + ':' + e.getResponseBodyAsString().substring(0,800),
 					ServiceStatus.ERROR);
 		} catch (Exception e) {
 			log.info("Error calling API {}", e.getMessage());
-			return getResult(serviceProvider, "Error calling API" + ':' + e.getMessage(), ServiceStatus.ERROR);
+			return getResult(serviceProvider, "API Error" + ':' + e.getMessage(), ServiceStatus.ERROR);
 		}
 
 	}

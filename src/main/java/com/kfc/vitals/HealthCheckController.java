@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kfc.vitals.sf.SfNotificationListener;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,16 +17,15 @@ import lombok.Getter;
 public class HealthCheckController {
 
 	private HealthCheckerRunner runner;
-	private SfUpdatingNotificationListener listener;
+//	private SfNotificationListener listener;
 
 	@RequestMapping("/check")
 	@ResponseBody
 	ResponseEntity<?> checkHealth() {
-		runner.addListener(listener);
+//		runner.addListener(listener);
 		runner.healthCheckAsync();
-
 		return new ResponseEntity<>(HttpStatus.ACCEPTED);
-
 	}
 
+	
 }

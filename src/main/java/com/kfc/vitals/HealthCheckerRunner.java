@@ -3,6 +3,7 @@ package com.kfc.vitals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -23,14 +24,22 @@ public class HealthCheckerRunner {
 
 	private final List<Service> services;
 	private final ServiceHealthCheckerRepository healthCheckerRepository;
-	private final List<HealthNotificationListener<?>> listeners = new ArrayList<>();
+	private final List<HealthNotificationListener<?>> listeners;
 
-	public HealthCheckerRunner(List<Service> services, ServiceHealthCheckerRepository healthCheckerRepository) {
+	public HealthCheckerRunner(List<Service> services, ServiceHealthCheckerRepository healthCheckerRepository,
+			List<HealthNotificationListener<?>> listenersList) {
 		this.services = services;
 		this.healthCheckerRepository = healthCheckerRepository;
+		if (listenersList == null) {
+			this.listeners = new ArrayList<>();
+		} else {
+			this.listeners = listenersList;
+		}
+
 	}
 
 	public void addListener(HealthNotificationListener<?> healthNotificationListener) {
+
 		listeners.add(healthNotificationListener);
 	}
 
@@ -42,8 +51,7 @@ public class HealthCheckerRunner {
 				log.info("checking provider {} for service {}", serviceProvider.getName(), service.getName());
 
 				for (Object providerCheckInput : serviceProvider.getProviderCheckInputList()) {
-					HealthCheckResult result = healthChecker.checkServiceProvider(serviceProvider,
-							providerCheckInput);
+					HealthCheckResult result = healthChecker.checkServiceProvider(serviceProvider, providerCheckInput);
 					for (HealthNotificationListener<?> listener : listeners) {
 						log.info(">>>>>>>> Calling listener {}", listener.getClass()
 								.getName());
@@ -54,10 +62,10 @@ public class HealthCheckerRunner {
 			}
 		}
 	}
-	
+
 	@Async("threadPoolTaskExecutor")
-	public void healthCheckAsync(){
+	public void healthCheckAsync() {
 		healthCheck();
 	}
-	
+
 }

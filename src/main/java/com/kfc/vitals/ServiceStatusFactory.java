@@ -1,9 +1,8 @@
-package com.kfc.vitals.sf;
+package com.kfc.vitals;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.kfc.vitals.HealthCheckResult;
 import com.sforce.soap.enterprise.sobject.ServiceStatusCurrent__c;
 
 public class ServiceStatusFactory {

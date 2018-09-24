@@ -1,0 +1,30 @@
+{
+  "fields": {
+      "serviceproviderid": {
+      "type": "string",
+      "name": "ServiceProvider",
+      "optional": false
+    },
+    "service": {
+      "type": "string",
+      "name": "Service",
+      "optional": false
+    },
+    "provider": {
+      "type": "string",
+      "name": "Provider",
+      "optional": false
+    },
+    "status": {
+      "type": "string",
+      "name": "Status",
+      "optional": false
+    },
+    "availability": {
+      "type": "percentage",
+      "name": "Availability",
+      "optional": false
+    }
+  },
+  "unique_by": ["serviceproviderid"]
+}

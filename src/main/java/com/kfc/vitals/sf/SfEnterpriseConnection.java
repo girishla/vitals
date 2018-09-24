@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
@@ -20,7 +21,6 @@ import com.sforce.soap.enterprise.GetUserInfoResult;
 import com.sforce.soap.enterprise.SaveResult;
 import com.sforce.soap.enterprise.UpsertResult;
 import com.sforce.soap.enterprise.sobject.SObject;
-import com.sforce.soap.enterprise.sobject.ServiceStatusCurrent__c;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 import com.sforce.ws.SessionRenewer;
@@ -37,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@ConditionalOnProperty("vitals.sf.enabled")
 public class SfEnterpriseConnection implements InitializingBean {
 
 	private EnterpriseConnection connection;

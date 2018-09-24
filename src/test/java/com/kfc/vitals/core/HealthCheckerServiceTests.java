@@ -9,15 +9,13 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.List;
 
-import org.hamcrest.Matchers;
+import org.assertj.core.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import com.kfc.vitals.ApiService;
 import com.kfc.vitals.HealthCheckResult;
 import com.kfc.vitals.HealthCheckerRunner;
 import com.kfc.vitals.HealthNotificationListener;
@@ -27,7 +25,7 @@ import com.kfc.vitals.ServiceName;
 import com.kfc.vitals.ServiceProvider;
 import com.kfc.vitals.ServiceStatus;
 import com.kfc.vitals.Utils;
-import com.kfc.vitals.services.restaurantdelivery.Restaurant;
+import com.kfc.vitals.services.restaurantdelivery.RestaurantDeliveryApiService;
 import com.kfc.vitals.services.restaurantdelivery.RestaurantDeliveryHealthChecker;
 import com.kfc.vitals.services.restaurantdelivery.RestaurantDeliveryService;
 import com.kfc.vitals.services.restaurantdelivery.RestaurantDeliveryServiceInput;
@@ -77,7 +75,7 @@ public class HealthCheckerServiceTests {
 	public void returnsStatusUpWhenApiReturnsValidData() {
 
 		@SuppressWarnings("unchecked")
-		ApiService<RestaurantDeliveryServiceInput, Restaurant> apiService = Mockito.mock(ApiService.class);
+		RestaurantDeliveryApiService apiService = Mockito.mock(RestaurantDeliveryApiService.class);
 
 		ServiceHealthChecker<RestaurantDeliveryServiceProvider, RestaurantDeliveryServiceInput> healthChecker = new RestaurantDeliveryHealthChecker(
 				apiService);
@@ -99,7 +97,7 @@ public class HealthCheckerServiceTests {
 	public void returnsStatusErrorWhenApiErrors() {
 
 		@SuppressWarnings("unchecked")
-		ApiService<RestaurantDeliveryServiceInput, Restaurant> apiService = Mockito.mock(ApiService.class);
+		RestaurantDeliveryApiService apiService = Mockito.mock(RestaurantDeliveryApiService.class);
 		ServiceHealthChecker<RestaurantDeliveryServiceProvider, RestaurantDeliveryServiceInput> healthChecker = new RestaurantDeliveryHealthChecker(
 				apiService);
 
@@ -118,6 +116,7 @@ public class HealthCheckerServiceTests {
 	@SuppressWarnings("unchecked")
 	private void setUpMocks() {
 		healthChecker = (ServiceHealthChecker<ServiceProvider<?>, Object>) Mockito.mock(ServiceHealthChecker.class);
+		
 		when(serviceProvider.getProviderCheckInputList()).thenReturn(Collections.singletonList(getValidInput()));
 		when(delService.getProviders()).thenReturn(Collections.singletonList(serviceProvider));
 		when(delService.getName()).thenReturn(ServiceName.RESTAURANT_DELIVERY);
@@ -127,7 +126,7 @@ public class HealthCheckerServiceTests {
 		
 		serviceHealthCheckerRepository = new ServiceHealthCheckerRepository(Collections.singletonList(healthChecker));
 		healthCheckRunner = new HealthCheckerRunner(Collections.singletonList(delService),
-				serviceHealthCheckerRepository);
+				serviceHealthCheckerRepository, null);
 		delService.addProvider(serviceProvider);
 		healthCheckRunner.addListener(listener);
 
@@ -154,7 +153,7 @@ public class HealthCheckerServiceTests {
 
 		serviceHealthCheckerRepository = new ServiceHealthCheckerRepository(Collections.singletonList(healthChecker2));
 		healthCheckRunner = new HealthCheckerRunner(Collections.singletonList(delService),
-				serviceHealthCheckerRepository);
+				serviceHealthCheckerRepository, null);
 
 		delService.addProvider(serviceProvider);
 		healthCheckRunner.addListener(listener);

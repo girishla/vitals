@@ -12,9 +12,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.kfc.vitals.sf.auth.SfJwtAuthResponse;
-import com.sforce.soap.enterprise.EnterpriseConnection;
-import com.sforce.soap.enterprise.GetUserInfoResult;
-import com.sforce.ws.ConnectionException;
 
 import lombok.extern.slf4j.Slf4j;
 

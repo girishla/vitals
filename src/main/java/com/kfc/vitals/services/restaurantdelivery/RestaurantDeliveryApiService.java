@@ -12,15 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.kfc.vitals.ApiService;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class RestaurantDeliveryApiService implements ApiService<RestaurantDeliveryServiceInput,Restaurant>  {
+public class RestaurantDeliveryApiService {
 
 	@Getter
 	@Setter
@@ -29,10 +27,6 @@ public class RestaurantDeliveryApiService implements ApiService<RestaurantDelive
 	private static final String baseUrl = "https://order.kfc.co.uk/";
 	private static final String getRestaurantsByDeliveryPostcodeEndpoint = baseUrl + "getRestaurantsByDeliveryPostcode";
 	
-	/* (non-Javadoc)
-	 * @see com.kfc.vitals.ApiService#invokeApi(com.kfc.vitals.RestaurantDeliveryServiceInput)
-	 */
-	@Override
 	public List<Restaurant> invokeApi(RestaurantDeliveryServiceInput input) {
 	
 		HttpEntity<RestaurantDeliveryServiceInput> request = new HttpEntity<>(input, getHttpHeader());

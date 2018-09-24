@@ -1,4 +1,4 @@
-package com.kfc.vitals.sf;
+package com.kfc.vitals;
 
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
