@@ -11,7 +11,6 @@ import lombok.experimental.Delegate;
  * Multiple separate instances would exist if the restaurant provides multiple
  * services
  * 
- * @author Girish Lakshmanan
  *
  */
 

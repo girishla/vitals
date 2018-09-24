@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
  * possible cases are covered; Notifies all registered listeners when health
  * check is completed
  * 
- * @author Girish Lakshmanan
  *
  */
 public class HealthCheckerRunner {
