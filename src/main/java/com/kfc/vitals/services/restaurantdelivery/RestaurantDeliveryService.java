@@ -16,7 +16,6 @@ import lombok.Getter;
  * Represents Restaurant Delivery as a Service implementation. The delivery service can be supported by
  * any number of Service Provider instances. Providers are registered/added on during runtime.
  * 
- * @author Girish Lakshmanan
  *
  */
 @Component

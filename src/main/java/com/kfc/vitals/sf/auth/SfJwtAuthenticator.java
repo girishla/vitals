@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
  * JWT Auth Implementation. We could also implement a username/pwd
  * implementation of the same interface but that would be less secure
  * 
- * @author Girish Lakshmanan
  *
  */
 @Slf4j

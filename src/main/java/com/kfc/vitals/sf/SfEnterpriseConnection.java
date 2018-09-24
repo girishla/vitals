@@ -31,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
  * Provides a Enterprise connection to salesforce.com. Re-connects when
  * necessary if the connection is not alive.
  * 
- * @author Girish Lakshmanan
  *
  */
 

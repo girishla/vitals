@@ -6,7 +6,6 @@ package com.kfc.vitals.sf.auth;
  * session token - which then can be used to create specific types of connection
  * like SOAP or Bulk;
  * 
- * @author Girish Lakshmanan
  *
  */
 public interface SfAuthenticator<R extends SfSessionInfo> {
