@@ -14,6 +14,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+/**
+ * Gecko board config props
+ * @author Girish Lakshmanan
+ *
+ */
 public class GeckoProps {
 
 	private String key;
