@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 /**
  * Gecko board config props
- * @author Girish Lakshmanan
+ * @author Nandhini Natarajan
  *
  */
 public class GeckoProps {

@@ -20,9 +20,7 @@ public class HealthCheckScheduledRunner {
 	@Scheduled(fixedDelay = 600000)
 	public void healthCheckAsync() {
 		runner.healthCheck();
-
 		log.info("checking health...");
-
 	}
 
 }
