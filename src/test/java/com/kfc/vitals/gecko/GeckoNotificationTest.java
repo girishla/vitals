@@ -26,7 +26,7 @@ public class GeckoNotificationTest {
 		@Bean
 		public GeckoProps props() {
 			return GeckoProps.builder()
-					.key("NjI2MjYxMTVmN2ExN2Q2YjFlZjVkOTA0Y2MwODNlMGI6")
+					.key("ZDc3MmU5NmQ1YmM0NWUzZmNiOTZkYjRhMjU5MGVhODc=")
 					.url("https://api.geckoboard.com/")
 					.build();
 		}

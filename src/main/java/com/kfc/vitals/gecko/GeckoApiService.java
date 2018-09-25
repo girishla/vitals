@@ -52,7 +52,7 @@ public class GeckoApiService {
 	HttpHeaders getHeaders() {
 		return new HttpHeaders() {
 			private static final long serialVersionUID = -2253133341817169428L;
-			{
+			{  
 				set("Authorization", "Basic " + props.getKey());
 
 			}

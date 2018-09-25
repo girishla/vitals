@@ -29,6 +29,7 @@ public class RestaurantDeliveryHealthChecker
 			RestaurantDeliveryServiceInput input) {
 
 		try {
+			
 			List<Restaurant> restaurants = apiService.invokeApi(input);
 			ServiceStatus status = restaurants.isEmpty() ? ServiceStatus.DOWN : ServiceStatus.UP;
 
