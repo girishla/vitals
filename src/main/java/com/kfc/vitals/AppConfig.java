@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 public class AppConfig {
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-		return restTemplateBuilder.setConnectTimeout(1000)
+		return restTemplateBuilder.setConnectTimeout(5000)
 				.setReadTimeout(10000)
 				.build();
 	}
