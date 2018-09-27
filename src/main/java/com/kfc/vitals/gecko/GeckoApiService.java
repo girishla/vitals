@@ -67,6 +67,7 @@ public class GeckoApiService {
 				request, String.class);
 
 		String resp = response.getBody();
+		log.info(">>>>>>>>>>>> Send Current request to Gecko is {}", request);
 		log.info(">>>>>>>>>>>> Send Current Status Response is {}", resp);
 		return resp;
 
@@ -81,7 +82,8 @@ public class GeckoApiService {
 				request, String.class);
 
 		String resp = response.getBody();
-		log.info(">>>>>>>>>>>> Send Historical Status Response is {}", resp);
+		log.info(">>>>>>>>>>>> Send Historical request to Gecko is {}", request);
+		log.info(">>>>>>>>>>>> Send Historical Status Response is {}", request);
 		return resp;
 
 	}

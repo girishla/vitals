@@ -1,7 +1,7 @@
 package com.kfc.vitals;
 
 public enum ServiceStatus {
-	UP("Up"), DOWN("Down"), ERROR("Error"), UNKNOWN("Unknown"), WARN("Warn");
+	UP("Up"), DOWN("Down"), ERROR("Error"), UNKNOWN("Unknown"), WARN("Warn"), CLOSED("Closed");
 
 	private final String name;
 

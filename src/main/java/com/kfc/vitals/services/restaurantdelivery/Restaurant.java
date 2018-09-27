@@ -12,6 +12,9 @@ import lombok.Data;
 @Data
 public class Restaurant implements Serializable {
 
+	private final static int OpeningTime = 17;
+	private final static int ClosingTime = 20;
+
 	@JsonProperty("sfid")
 	public String sfid;
 	@JsonProperty("name")
@@ -78,6 +81,13 @@ public class Restaurant implements Serializable {
 	public String lastFleetCheckDate;
 	private final static long serialVersionUID = 3299894623227937177L;
 
-	
 
+
+public int getOpeningTime() {
+	return this.OpeningTime;
+}
+
+public int getClosingTime() {
+	return this.ClosingTime;
+}
 }
