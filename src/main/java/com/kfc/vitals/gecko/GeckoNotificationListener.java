@@ -15,8 +15,6 @@ import lombok.AllArgsConstructor;
 /**
  * Sends Current Service Status to Gecko
  * 
- * @author Girish Lakshmanan
- *
  */
 @Component
 @AllArgsConstructor
